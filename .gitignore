@@ -1,0 +1,32 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+dist
+dist-ssr
+*.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+VITE_FIREBASE_API_KEY=AIzaSyCeXfk_eUgWuSFH3xM0qs8XT64EmhsVR7Y
+VITE_FIREBASE_AUTH_DOMAIN=fly-n-dodge.firebaseapp.com
+VITE_FIREBASE_DATABASE_URL=https://fly-n-dodge-default-rtdb.asia-southeast1.firebasedatabase.app
+VITE_FIREBASE_PROJECT_ID=fly-n-dodge
+VITE_FIREBASE_STORAGE_BUCKET=fly-n-dodge.firebasestorage.app
+VITE_FIREBASE_MESSAGING_SENDER_ID=231276668908
+VITE_FIREBASE_APP_ID=1:231276668908:web:2b292e7fa195fe0229c2c9

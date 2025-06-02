@@ -1,0 +1,135 @@
+.leaderboard-container {
+    background: linear-gradient(
+        rgba(0, 0, 0, 0.7), 
+        rgba(0, 0, 0, 0.7)
+      ),
+      url("/background.jpg"); /* Ganti path sesuai gambar kamu */
+    background-size: cover;
+    background-position: center;
+    min-height: 100vh;
+    padding: 20px;
+    color: white;
+    text-align: center;
+  }
+  
+  
+  .leaderboard-title {
+    font-size: 40px;
+    margin-bottom: 30px;
+    font-weight: bold;
+    text-shadow: 2px 2px #000;
+  }
+  
+  .top-three {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    gap: 20px;
+    margin-bottom: 40px;
+  }
+  
+  .player-card {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 10px;
+    width: 100px;
+  }
+  
+  .player-card.first {
+    background: #ffcc00;
+    color: black;
+    transform: scale(1.1);
+    padding: 20px;
+  }
+  
+  .avatar {
+    width: 60px;
+    height: 60px;
+    background: #ccc;
+    border-radius: 50%;
+    margin: 0 auto 10px;
+  }
+  
+  .avatar.large {
+    width: 80px;
+    height: 80px;
+  }
+  
+  .other-players {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .row-player {
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 10px;
+    width: 300px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 10px;
+  }
+  
+  .avatar.small {
+    width: 40px;
+    height: 40px;
+    background: #aaa;
+    border-radius: 50%;
+  }
+  
+  .name {
+    font-weight: bold;
+  }
+  
+  .back-button {
+    margin-top: 30px;
+    padding: 10px 20px;
+    background-color: #ffcc00;
+    color: black;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+  
+  .back-button:hover {
+    background-color: #e6b800;
+  }
+  .first-place {
+    background: linear-gradient(135deg, #FFD700, #FFA500);
+    box-shadow: 0 0 20px #FFD700;
+    border: 3px solid #FFD700;
+    animation: pulse-gold 2s infinite;
+  }
+  
+  @keyframes pulse-gold {
+    0% { box-shadow: 0 0 10px #FFD700; }
+    100% { box-shadow: 0 0 20px #FFA500; }
+  }
+  .second-place {
+    background: linear-gradient(135deg, #C0C0C0, #A9A9A9);
+    box-shadow: 0 0 15px #C0C0C0;
+    border: 3px solid #C0C0C0;
+  }
+  .third-place {
+    background: linear-gradient(135deg, #CD7F32, #8B4513);
+    box-shadow: 0 0 15px #CD7F32;
+    border: 3px solid #CD7F32;
+  }
+  @keyframes slide-up {
+    from {
+      transform: translateY(50px);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+  
+  .slide-up {
+    animation: slide-up 0.6s ease-out forwards;
+  }
+  

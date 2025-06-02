@@ -1,0 +1,101 @@
+.landing-page {
+  position: relative;
+  overflow: hidden;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-image: url("../assets/background.jpg"); /* Ganti nama file sesuai gambar kamu */
+  background-size: cover;
+  background-position: center;
+  color: white;
+  font-family: sans-serif;
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Efek gelap di background */
+  z-index: 0;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px 40px;
+  background-color: rgba(0, 0, 0, 0.4);
+  position: relative;
+  z-index: 1;
+}
+
+.logo {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #fff;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
+}
+
+.nav-links button {
+  margin-left: 15px;
+  padding: 8px 16px;
+  border: none;
+  background-color: #2196f3;
+  color: white;
+  font-weight: bold;
+  border-radius: 5px;
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+}
+
+.nav-links button:hover {
+  background-color: #1976d2;
+}
+
+.landing-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding-top: 80px;
+  position: relative;
+  z-index: 1;
+}
+
+.landing-content h1 {
+  font-size: 2.8rem;
+  margin-bottom: 10px;
+  text-shadow: 2px 2px 8px rgba(0,0,0,0.7);
+}
+
+.landing-content p {
+  font-size: 1.1rem;
+  max-width: 600px;
+  margin-bottom: 50px;
+  text-shadow: 1px 1px 5px rgba(0,0,0,0.6);
+}
+
+.center-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.center-buttons button {
+  padding: 16px 40px;
+  font-size: 1.2rem;
+  border: none;
+  border-radius: 10px;
+  background-color: #2196f3;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+  transition: background-color 0.3s ease;
+}
+
+.center-buttons button:hover {
+  background-color: #1976d2;
+}

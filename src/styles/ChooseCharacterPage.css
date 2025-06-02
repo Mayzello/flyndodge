@@ -1,0 +1,83 @@
+/* Hindari scroll halaman */
+body, html {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+  }
+  
+  /* Container utama */
+  .choose-character-container {
+    background-image: url("../assets/background.jpg"); /* Ganti sesuai nama background */
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1rem;
+    box-sizing: border-box;
+    overflow: hidden;
+  }
+  
+  /* Judul */
+  .choose-character-title {
+    color: white;
+    font-size: 2.2rem;
+    font-weight: bold;
+    margin: 1rem 0;
+  }
+  
+  /* Tombol kembali */
+  .back-button {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    background: orange;
+    color: white;
+    border: none;
+    padding: 8px 18px;
+    font-weight: bold;
+    border-radius: 20px;
+    cursor: pointer;
+    z-index: 10;
+  }
+  
+  /* Grid karakter */
+  .character-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    width: 80%;
+    max-width: 1000px;
+    justify-items: center;
+    align-items: center;
+    flex-grow: 1;
+  }
+  
+  /* Kartu karakter - ukuran diperbesar */
+  .character-card {
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 16px;
+    padding: 12px;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    width: 230px;
+    height: 230px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .character-card:hover {
+    transform: scale(1.08);
+    box-shadow: 0 0 20px yellow;
+  }
+  
+  /* Gambar karakter */
+  .character-image {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    border-radius: 12px;
+  }
+  
