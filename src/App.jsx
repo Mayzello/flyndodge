@@ -10,7 +10,7 @@ import ChooseCharacterPage from "./components/ChooseCharacterPage";
 
 
 import Gameplay1Page from "./components/Gameplay1Page";
-import GameplayduaPage from "./components/GameplayduaPage";
+import Gameplay2Page from "./components/Gameplay2Page";
 import Gameplay3Page from "./components/Gameplay3Page";
 import Gameplay4Page from "./components/Gameplay4Page";
 import Gameplay5Page from "./components/Gameplay5Page";
@@ -40,7 +40,7 @@ function App() {
       <Route path="/choosecharacter" element={<ChooseCharacterPage />} />
 
       <Route path="/gameplay1" element={<Gameplay1Page />} />
-      <Route path="/gameplaydua" element={<GameplayduaPage />} />
+      <Route path="/gameplay2" element={<Gameplay2Page />} />
       <Route path="/gameplay3" element={<Gameplay3Page />} />
       <Route path="/gameplay4" element={<Gameplay4Page />} />
       <Route path="/gameplay5" element={<Gameplay5Page />} />

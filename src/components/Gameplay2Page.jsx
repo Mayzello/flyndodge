@@ -6,7 +6,7 @@ import rocketImage from "../assets/map1/roket1.png";
 import backgroundImage from "../assets/map2/bgmap2.png";
 import explosionImage from "../assets/map1/meledup.png";
 
-const GameplayduaPage = () => {
+const Gameplay2Page = () => {
   const canvasRef = useRef(null);
   const animationRef = useRef(null);
   const [gameOver, setGameOver] = useState(false);
@@ -254,4 +254,4 @@ const GameplayduaPage = () => {
   );
 };
 
-export default GameplayduaPage;
+export default Gameplay2Page;
