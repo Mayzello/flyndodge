@@ -5,6 +5,8 @@ import saitamaImage from "../assets/map1/charmap1.png";
 import rocketImage from "../assets/map1/roket1.png";
 import backgroundImage from "../assets/map1/bgmap1.jpg";
 import explosionImage from "../assets/map1/meledup.png";
+import { ref, push } from "firebase/database";
+import { database } from "../firebase.js"; // pastikan path sesuai
 
 const Gameplay1Page = () => {
   const canvasRef = useRef(null);
@@ -250,6 +252,7 @@ const Gameplay1Page = () => {
           <button onClick={() => navigate("/")}>Kembali ke Lobi</button>
         </div>
       )}
+      
     </div>
   );
 };
