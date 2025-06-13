@@ -1,83 +1,158 @@
-/* Hindari scroll halaman */
+/* Base styles - mobile first */
 body, html {
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-  }
-  
-  /* Container utama */
-  .choose-character-container {
-    background-image: url("../assets/background.jpg"); /* Ganti sesuai nama background */
-    background-size: cover;
-    background-position: center;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 1rem;
-    box-sizing: border-box;
-    overflow: hidden;
-  }
-  
-  /* Judul */
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+.choose-character-container {
+  background-image: url("../assets/background.jpg");
+  background-size: cover;
+  background-position: center;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem;
+  box-sizing: border-box;
+  overflow: hidden;
+  position: relative;
+}
+
+.choose-character-title {
+  color: white;
+  font-size: 1.8rem; /* Smaller on mobile */
+  font-weight: bold;
+  margin: 1rem 0;
+  text-align: center;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+}
+
+.back-button {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  background: orange;
+  color: white;
+  border: none;
+  padding: 6px 14px;
+  font-weight: bold;
+  border-radius: 20px;
+  cursor: pointer;
+  z-index: 10;
+  font-size: 0.9rem;
+}
+
+.character-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* 2 columns on mobile */
+  gap: 1rem;
+  width: 100%;
+  padding: 0.5rem;
+  justify-items: center;
+  align-items: center;
+  margin-top: 1rem;
+  overflow-y: auto; /* Allow scrolling if needed */
+  max-height: calc(100vh - 120px); /* Prevent overflow */
+}
+
+.character-card {
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 12px;
+  padding: 8px;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  width: 140px; /* Smaller cards on mobile */
+  height: 140px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+}
+
+.character-card:hover {
+  transform: scale(1.05); /* More subtle hover effect on mobile */
+  box-shadow: 0 0 15px yellow;
+}
+
+.character-image {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  border-radius: 8px;
+}
+
+/* Tablet styles (600px and up) */
+@media (min-width: 600px) {
   .choose-character-title {
-    color: white;
-    font-size: 2.2rem;
-    font-weight: bold;
-    margin: 1rem 0;
+    font-size: 2rem;
+    margin: 1.5rem 0;
   }
   
-  /* Tombol kembali */
   .back-button {
-    position: absolute;
-    top: 20px;
-    left: 20px;
-    background: orange;
-    color: white;
-    border: none;
-    padding: 8px 18px;
-    font-weight: bold;
-    border-radius: 20px;
-    cursor: pointer;
-    z-index: 10;
+    padding: 8px 16px;
+    font-size: 1rem;
   }
   
-  /* Grid karakter */
   .character-grid {
-    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 columns on tablet */
+    gap: 1.5rem;
+  }
+  
+  .character-card {
+    width: 160px;
+    height: 160px;
+  }
+}
+
+/* Small desktop/large tablet (900px and up) */
+@media (min-width: 900px) {
+  .choose-character-title {
+    font-size: 2.2rem;
+  }
+  
+  .character-grid {
     grid-template-columns: repeat(3, 1fr);
     gap: 2rem;
-    width: 80%;
+    width: 90%;
     max-width: 1000px;
-    justify-items: center;
-    align-items: center;
-    flex-grow: 1;
   }
   
-  /* Kartu karakter - ukuran diperbesar */
   .character-card {
-    background: rgba(0, 0, 0, 0.3);
-    border-radius: 16px;
+    width: 200px;
+    height: 200px;
     padding: 12px;
-    cursor: pointer;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    width: 230px;
-    height: 230px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
   }
   
   .character-card:hover {
     transform: scale(1.08);
     box-shadow: 0 0 20px yellow;
   }
-  
-  /* Gambar karakter */
-  .character-image {
-    max-width: 100%;
-    max-height: 100%;
-    object-fit: contain;
-    border-radius: 12px;
+}
+
+/* Large desktop (1200px and up) */
+@media (min-width: 1200px) {
+  .character-card {
+    width: 230px;
+    height: 230px;
+  }
+}
+
+/* Landscape orientation on mobile devices */
+@media (max-height: 600px) and (orientation: landscape) {
+  .choose-character-title {
+    font-size: 1.5rem;
+    margin: 0.5rem 0;
   }
   
+  .character-grid {
+    grid-template-columns: repeat(4, 1fr); /* More columns in landscape */
+    gap: 0.8rem;
+    max-height: calc(100vh - 80px);
+  }
+  
+  .character-card {
+    width: 120px;
+    height: 120px;
+  }
+}

@@ -22,8 +22,8 @@ const Gameplay4Page = () => {
     let character = {
       x: 50,
       y: 150,
-      width: 350,
-      height: 250,
+      width: 100,
+      height: 100,
       speed: 5,
     };
 
@@ -60,19 +60,37 @@ const Gameplay4Page = () => {
     let floatingScores = [];
     let frameCount = 0;
     let trails = [];
+    let currentScore = 0;
 
     const loop = (timestamp) => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      // Background
       bgX -= bgSpeed;
       if (bgX <= -canvas.width) bgX = 0;
       ctx.drawImage(bg, bgX, 0, canvas.width, canvas.height);
       ctx.drawImage(bg, bgX + canvas.width, 0, canvas.width, canvas.height);
 
-      // Trail gaya Nyan Cat (kotak pelangi transparan memanjang)
-      
-      // Gerak karakter
+      if (!gameOver) {
+        trails.push({
+          x: character.x,
+          y: character.y + character.height / 2 - 10,
+          width: 30,
+          height: 20,
+          lifetime: 40,
+          hue: frameCount * 10 % 360,
+        });
+      }
+
+      trails.forEach((trail) => {
+        ctx.save();
+        ctx.globalAlpha = 0.4;
+        ctx.fillStyle = `hsl(${trail.hue}, 100%, 50%)`;
+        ctx.fillRect(trail.x, trail.y, trail.width, trail.height);
+        ctx.restore();
+        trail.lifetime--;
+      });
+      trails = trails.filter((t) => t.lifetime > 0);
+
       if (!gameOver) {
         if (keys.ArrowUp) character.y -= character.speed;
         if (keys.ArrowDown) character.y += character.speed;
@@ -83,7 +101,6 @@ const Gameplay4Page = () => {
         character.x = Math.max(0, Math.min(canvas.width - character.width, character.x));
       }
 
-      // Tambah roket
       if (!gameOver && timestamp - lastRocketTime > rocketInterval) {
         for (let i = 0; i < rocketCount; i++) {
           rockets.push({
@@ -101,7 +118,6 @@ const Gameplay4Page = () => {
         lastRocketIncreaseTime = Date.now();
       }
 
-      // Roket dan tabrakan
       rockets = rockets.filter((rocket) => {
         rocket.x -= 4;
         ctx.drawImage(rocketImg, rocket.x, rocket.y, rocket.width, rocket.height);
@@ -122,16 +138,32 @@ const Gameplay4Page = () => {
               frameInterval: 5,
             });
             setGameOver(true);
-            setSurvivalTime(Math.floor((Date.now() - startTime) / 1000));
+            const endTime = Math.floor((Date.now() - startTime) / 1000);
+            setSurvivalTime(endTime);
+
+            const stored = JSON.parse(localStorage.getItem("user")) || {};
+            const userRef = ref(database, `leaderboard/${stored.uid}`);
+            get(userRef).then((snapshot) => {
+              const existing = snapshot.val();
+              if (!existing || currentScore > existing.score) {
+                set(userRef, {
+                  username: stored.username || "Guest",
+                  score: currentScore,
+                  survivalTime: endTime,
+                  timestamp: Date.now(),
+                  photoURL: stored.photoURL || null,
+                });
+              }
+            });
           }
         }
 
         return rocket.x + rocket.width > 0;
       });
 
-      // Floating score
       if (!gameOver && frameCount % 10 === 0) {
-        setScore((prev) => prev + 1);
+        currentScore++;
+        setScore(currentScore);
         floatingScores.push({
           x: character.x + character.width,
           y: character.y,
@@ -153,10 +185,8 @@ const Gameplay4Page = () => {
       });
       floatingScores = floatingScores.filter((fs) => fs.lifetime > 0);
 
-      // Gambar karakter
       ctx.drawImage(saitama, character.x, character.y, character.width, character.height);
 
-      // Animasi ledakan
       explosions.forEach((explosion) => {
         const sx = explosion.frame * explosionFrameWidth;
         ctx.drawImage(
@@ -178,7 +208,6 @@ const Gameplay4Page = () => {
       });
       explosions = explosions.filter((e) => e.frame < explosionFrameCount);
 
-      // Stop loop jika gameOver & ledakan selesai
       if (gameOver && explosions.length === 0) {
         cancelAnimationFrame(animationRef.current);
         return;

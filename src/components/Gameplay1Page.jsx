@@ -5,10 +5,11 @@ import saitamaImage from "../assets/map1/charmap1.png";
 import rocketImage from "../assets/map1/roket1.png";
 import backgroundImage from "../assets/map1/bgmap1.jpg";
 import explosionImage from "../assets/map1/meledup.png";
-import { ref, push } from "firebase/database";
-import { database } from "../firebase.js"; // pastikan path sesuai
+import { ref, set, get } from "firebase/database";
+import { database } from "../firebase.js";
 
 const Gameplay1Page = () => {
+  const [isPortrait, setIsPortrait] = useState(false);
   const canvasRef = useRef(null);
   const animationRef = useRef(null);
   const [gameOver, setGameOver] = useState(false);
@@ -17,7 +18,47 @@ const Gameplay1Page = () => {
   const [survivalTime, setSurvivalTime] = useState(0);
   const navigate = useNavigate();
 
+  // Check screen orientation
   useEffect(() => {
+    const handleOrientationChange = () => {
+      setIsPortrait(window.innerHeight > window.innerWidth);
+    };
+
+    // Initial check
+    handleOrientationChange();
+
+    // Add event listeners
+    window.addEventListener('resize', handleOrientationChange);
+    window.addEventListener('orientationchange', handleOrientationChange);
+
+    // Try to lock orientation to landscape if supported
+    const tryLockOrientation = async () => {
+      try {
+        if (screen.orientation?.lock) {
+          await screen.orientation.lock('landscape');
+        }
+      } catch (err) {
+        console.log('Orientation lock failed:', err);
+      }
+    };
+
+    tryLockOrientation();
+
+    return () => {
+      window.removeEventListener('resize', handleOrientationChange);
+      window.removeEventListener('orientationchange', handleOrientationChange);
+      
+      // Unlock orientation when component unmounts
+      if (screen.orientation?.unlock) {
+        screen.orientation.unlock();
+      }
+    };
+  }, []);
+
+  useEffect(() => {
+    // Only start game if not in portrait mode
+    if (isPortrait) return;
+
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
 
@@ -62,17 +103,22 @@ const Gameplay1Page = () => {
     let floatingScores = [];
     let frameCount = 0;
     let trails = [];
+    let currentScore = 0;
 
     const loop = (timestamp) => {
+      // Skip game loop if in portrait mode
+      if (isPortrait) {
+        cancelAnimationFrame(animationRef.current);
+        return;
+      }
+
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      // Background
       bgX -= bgSpeed;
       if (bgX <= -canvas.width) bgX = 0;
       ctx.drawImage(bg, bgX, 0, canvas.width, canvas.height);
       ctx.drawImage(bg, bgX + canvas.width, 0, canvas.width, canvas.height);
 
-      // Trail gaya Nyan Cat (kotak pelangi transparan memanjang)
       if (!gameOver) {
         trails.push({
           x: character.x,
@@ -94,7 +140,6 @@ const Gameplay1Page = () => {
       });
       trails = trails.filter((t) => t.lifetime > 0);
 
-      // Gerak karakter
       if (!gameOver) {
         if (keys.ArrowUp) character.y -= character.speed;
         if (keys.ArrowDown) character.y += character.speed;
@@ -105,7 +150,6 @@ const Gameplay1Page = () => {
         character.x = Math.max(0, Math.min(canvas.width - character.width, character.x));
       }
 
-      // Tambah roket
       if (!gameOver && timestamp - lastRocketTime > rocketInterval) {
         for (let i = 0; i < rocketCount; i++) {
           rockets.push({
@@ -123,7 +167,6 @@ const Gameplay1Page = () => {
         lastRocketIncreaseTime = Date.now();
       }
 
-      // Roket dan tabrakan
       rockets = rockets.filter((rocket) => {
         rocket.x -= 4;
         ctx.drawImage(rocketImg, rocket.x, rocket.y, rocket.width, rocket.height);
@@ -144,16 +187,32 @@ const Gameplay1Page = () => {
               frameInterval: 5,
             });
             setGameOver(true);
-            setSurvivalTime(Math.floor((Date.now() - startTime) / 1000));
+            const endTime = Math.floor((Date.now() - startTime) / 1000);
+            setSurvivalTime(endTime);
+
+            const stored = JSON.parse(localStorage.getItem("user")) || {};
+            const userRef = ref(database, `leaderboard/${stored.uid}`);
+            get(userRef).then((snapshot) => {
+              const existing = snapshot.val();
+              if (!existing || currentScore > existing.score) {
+                set(userRef, {
+                  username: stored.username || "Guest",
+                  score: currentScore,
+                  survivalTime: endTime,
+                  timestamp: Date.now(),
+                  photoURL: stored.photoURL || null,
+                });
+              }
+            });
           }
         }
 
         return rocket.x + rocket.width > 0;
       });
 
-      // Floating score
       if (!gameOver && frameCount % 10 === 0) {
-        setScore((prev) => prev + 1);
+        currentScore++;
+        setScore(currentScore);
         floatingScores.push({
           x: character.x + character.width,
           y: character.y,
@@ -175,10 +234,8 @@ const Gameplay1Page = () => {
       });
       floatingScores = floatingScores.filter((fs) => fs.lifetime > 0);
 
-      // Gambar karakter
       ctx.drawImage(saitama, character.x, character.y, character.width, character.height);
 
-      // Animasi ledakan
       explosions.forEach((explosion) => {
         const sx = explosion.frame * explosionFrameWidth;
         ctx.drawImage(
@@ -200,7 +257,6 @@ const Gameplay1Page = () => {
       });
       explosions = explosions.filter((e) => e.frame < explosionFrameCount);
 
-      // Stop loop jika gameOver & ledakan selesai
       if (gameOver && explosions.length === 0) {
         cancelAnimationFrame(animationRef.current);
         return;
@@ -217,7 +273,7 @@ const Gameplay1Page = () => {
       window.removeEventListener("keydown", handleKeyDown);
       window.removeEventListener("keyup", handleKeyUp);
     };
-  }, [gameOver]);
+  }, [gameOver, isPortrait]);
 
   const restartGame = () => {
     setGameOver(false);
@@ -228,31 +284,41 @@ const Gameplay1Page = () => {
 
   return (
     <div className="gameplay-container">
-      <canvas
-        ref={canvasRef}
-        width={window.innerWidth}
-        height={window.innerHeight}
-        className="game-canvas"
-      />
-
-      {!gameOver && (
-        <div className="hud">
-          <p>Score: {score}</p>
-          <p>Time: {Math.floor((Date.now() - startTime) / 1000)}s</p>
+      {isPortrait && (
+        <div className="orientation-warning">
+          <h2>Silahkan putar perangkat ke mode landscape</h2>
+          <p>Game ini hanya dapat dimainkan dalam orientasi horizontal</p>
         </div>
       )}
 
-      {gameOver && (
-        <div className="game-over">
-          <h1>Game Over</h1>
-          <p>Score: {score}</p>
-          <p>Waktu Bertahan: {survivalTime} detik</p>
-          <button onClick={restartGame}>Restart</button>
-          <button onClick={() => navigate("/choosecharacter")}>Pilih Karakter</button>
-          <button onClick={() => navigate("/")}>Kembali ke Lobi</button>
-        </div>
+      {!isPortrait && (
+        <>
+          <canvas
+            ref={canvasRef}
+            width={window.innerWidth}
+            height={window.innerHeight}
+            className="game-canvas"
+          />
+
+          {!gameOver && (
+            <div className="hud">
+              <p>Score: {score}</p>
+              <p>Time: {Math.floor((Date.now() - startTime) / 1000)}s</p>
+            </div>
+          )}
+
+          {gameOver && (
+            <div className="game-over">
+              <h1>Game Over</h1>
+              <p>Score: {score}</p>
+              <p>Waktu Bertahan: {survivalTime} detik</p>
+              <button onClick={restartGame}>Restart</button>
+              <button onClick={() => navigate("/choosecharacter")}>Pilih Karakter</button>
+              <button onClick={() => navigate("/")}>Kembali ke Lobi</button>
+            </div>
+          )}
+        </>
       )}
-      
     </div>
   );
 };

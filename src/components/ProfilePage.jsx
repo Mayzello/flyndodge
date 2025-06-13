@@ -1,72 +1,41 @@
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
-import "../styles/ProfilePage.css";
-import { ref, update, onValue } from "firebase/database";
+import { ref, onValue } from "firebase/database";
 import { database } from "../firebase";
+import "../styles/ProfilePage.css";
 
 const ProfilePage = () => {
   const navigate = useNavigate();
-  const [user, setUser] = useState({});
+  const [user, setUser] = useState(null);
+  const [userData, setUserData] = useState({});
 
   useEffect(() => {
-    const stored = JSON.parse(localStorage.getItem("user")) || {};
-    if (stored.uid) {
-      const userRef = ref(database, `users/${stored.uid}`);
+    const stored = JSON.parse(localStorage.getItem("user"));
+    setUser(stored);
+
+    if (stored && stored.uid) {
+      const userRef = ref(database, `leaderboard/${stored.uid}`);
       onValue(userRef, (snapshot) => {
-        const dbUser = snapshot.val();
-        const mergedUser = {
-          ...stored,
-          username: dbUser?.username || stored.username,
-          email: dbUser?.email || stored.email,
-          photoURL: dbUser?.photoURL || stored.photoURL,
-          highScore: dbUser?.highScore || 0,
-          survivalTime: dbUser?.survivalTime || "0:00",
-        };
-        setUser(mergedUser);
-        localStorage.setItem("user", JSON.stringify(mergedUser));
+        const data = snapshot.val();
+        if (data) {
+          setUserData(data);
+        }
       });
     }
   }, []);
-
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        const base64 = reader.result;
-        const updatedUser = { ...user, photoURL: base64 };
-        setUser(updatedUser);
-        localStorage.setItem("user", JSON.stringify(updatedUser));
-
-        if (user.uid) {
-          const userRef = ref(database, `users/${user.uid}`);
-          update(userRef, { photoURL: base64 })
-            .then(() => console.log("Foto profil berhasil disimpan"))
-            .catch((err) =>
-              console.error("Gagal menyimpan foto profil:", err)
-            );
-        } else {
-          console.warn("UID tidak ditemukan. Tidak bisa menyimpan ke database.");
-        }
-      };
-      reader.readAsDataURL(file);
-    }
-  };
 
   return (
     <div className="profile-container">
       <div className="profile-card">
         <img
-          src={user.photoURL || "https://via.placeholder.com/120"}
+          src={user?.photoURL || "https://assets-a1.kompasiana.com/items/album/2021/03/24/blank-profile-picture-973460-1280-605aadc08ede4874e1153a12.png?t=o&v=1200"}
           alt="Profile"
           className="profile-img"
         />
-        <h2>{user.username || "Guest"}</h2>
-        <p>Email: {user.email || "guest@example.com"}</p>
-        <p>Skor Tertinggi: {user.highScore || 0}</p>
-        <p>Waktu Bertahan: {user.survivalTime || "0:00"}</p>
-
-        <input type="file" accept="image/*" onChange={handleImageChange} />
+        <h2>{user?.username || "Guest"}</h2>
+        <p>Email: {user?.email || "guest@example.com"}</p>
+        <p>Skor Tertinggi: {userData.score || 0}</p>
+        <p>Waktu Bertahan: {userData.survivalTime || "0:00"}</p>
 
         <button className="back-button" onClick={() => navigate("/")}>
           ⬅ Kembali

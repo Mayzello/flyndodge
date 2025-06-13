@@ -1,10 +1,10 @@
 .landing-page {
   position: relative;
   overflow: hidden;
-  height: 100vh;
+  min-height: 100vh; /* Changed from height to min-height */
   display: flex;
   flex-direction: column;
-  background-image: url("../assets/background.jpg"); /* Ganti nama file sesuai gambar kamu */
+  background-image: url("../assets/background.jpg");
   background-size: cover;
   background-position: center;
   color: white;
@@ -17,29 +17,38 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5); /* Efek gelap di background */
+  background-color: rgba(0, 0, 0, 0.5);
   z-index: 0;
 }
 
 .navbar {
   display: flex;
   justify-content: space-between;
-  padding: 20px 40px;
+  padding: 15px 20px; /* Reduced padding for mobile */
   background-color: rgba(0, 0, 0, 0.4);
   position: relative;
   z-index: 1;
+  flex-wrap: wrap; /* Allow items to wrap on small screens */
 }
 
 .logo {
-  font-size: 1.5rem;
+  font-size: 1.3rem; /* Smaller on mobile */
   font-weight: bold;
   color: #fff;
   text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
 }
 
+.nav-links {
+  display: flex;
+  flex-wrap: wrap; /* Allow buttons to wrap */
+  justify-content: flex-end;
+  gap: 10px; /* Better spacing between buttons */
+  margin-top: 10px; /* Space when buttons wrap */
+}
+
 .nav-links button {
-  margin-left: 15px;
-  padding: 8px 16px;
+  margin-left: 0; /* Removed margin-left in favor of gap */
+  padding: 6px 12px; /* Smaller buttons on mobile */
   border: none;
   background-color: #2196f3;
   color: white;
@@ -47,6 +56,7 @@
   border-radius: 5px;
   cursor: pointer;
   box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+  font-size: 0.9rem; /* Smaller font on mobile */
 }
 
 .nav-links button:hover {
@@ -59,43 +69,121 @@
   flex-direction: column;
   align-items: center;
   text-align: center;
-  padding-top: 80px;
+  padding: 40px 20px 20px; /* Adjusted padding for mobile */
   position: relative;
   z-index: 1;
 }
 
 .landing-content h1 {
-  font-size: 2.8rem;
+  font-size: 2rem; /* Smaller on mobile */
   margin-bottom: 10px;
   text-shadow: 2px 2px 8px rgba(0,0,0,0.7);
+  padding: 0 15px; /* Prevent text from touching edges */
 }
 
 .landing-content p {
-  font-size: 1.1rem;
-  max-width: 600px;
-  margin-bottom: 50px;
+  font-size: 1rem; /* Smaller on mobile */
+  max-width: 100%; /* Full width on mobile */
+  padding: 0 20px; /* Padding instead of margin for better control */
+  margin-bottom: 30px; /* Reduced on mobile */
   text-shadow: 1px 1px 5px rgba(0,0,0,0.6);
 }
 
 .center-buttons {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 15px; /* Smaller gap on mobile */
+  width: 90%; /* Take more width on mobile */
+  max-width: 400px; /* But limit maximum width */
 }
 
 .center-buttons button {
-  padding: 16px 40px;
-  font-size: 1.2rem;
+  padding: 12px 30px; /* Slightly smaller on mobile */
+  font-size: 1rem; /* Smaller font on mobile */
   border: none;
-  border-radius: 10px;
+  border-radius: 8px; /* Slightly less rounded on mobile */
   background-color: #2196f3;
   color: white;
   font-weight: bold;
   cursor: pointer;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
   transition: background-color 0.3s ease;
+  width: 100%; /* Full width buttons on mobile */
 }
 
 .center-buttons button:hover {
   background-color: #1976d2;
+}
+
+/* Tablet Styles */
+@media (min-width: 768px) {
+  .navbar {
+    padding: 20px 30px;
+  }
+  
+  .logo {
+    font-size: 1.5rem;
+  }
+  
+  .nav-links {
+    margin-top: 0;
+    gap: 15px;
+  }
+  
+  .nav-links button {
+    padding: 8px 16px;
+    font-size: 1rem;
+  }
+  
+  .landing-content {
+    padding-top: 60px;
+  }
+  
+  .landing-content h1 {
+    font-size: 2.5rem;
+  }
+  
+  .landing-content p {
+    font-size: 1.1rem;
+    max-width: 80%;
+    margin-bottom: 40px;
+  }
+  
+  .center-buttons {
+    flex-direction: row; /* Side by side buttons on tablet+ */
+    justify-content: center;
+    gap: 20px;
+    max-width: 600px;
+  }
+  
+  .center-buttons button {
+    width: auto; /* Auto width for side by side buttons */
+    padding: 14px 35px;
+    font-size: 1.1rem;
+  }
+}
+
+/* Desktop Styles */
+@media (min-width: 1024px) {
+  .navbar {
+    padding: 20px 40px;
+  }
+  
+  .landing-content {
+    padding-top: 80px;
+  }
+  
+  .landing-content h1 {
+    font-size: 2.8rem;
+  }
+  
+  .landing-content p {
+    max-width: 600px;
+    margin-bottom: 50px;
+  }
+  
+  .center-buttons button {
+    padding: 16px 40px;
+    font-size: 1.2rem;
+  }
 }

@@ -4,45 +4,65 @@
     align-items: center;
     justify-content: center;
     height: 100vh;
-    background-image: url('/background.jpg'); /* <- Gambar dari public */
+    background-image: url('/background.jpg');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
     color: white;
-  }
-  
-  
-  .loading-image {
-    width: 200px;
-    margin-bottom: 30px;
+    position: relative;
+}
+
+.loading-container::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 0;
+}
+
+.loading-container > * {
+    position: relative;
+    z-index: 1;
+}
+
+.loading-image {
+    width: 150px; /* Ukuran default */
+    max-width: 80%; /* Membatasi ukuran maksimum */
+    margin-bottom: 20px;
     filter: drop-shadow(0 0 10px rgba(0,0,0,0.8));
-  }
-  
-  .progress-bar {
-    width: 60%;
-    height: 16px;
+}
+
+.progress-bar {
+    width: 80%; /* Lebih lebar di mobile */
+    max-width: 400px; /* Membatasi lebar maksimum */
+    height: 12px; /* Lebih tipis di mobile */
     background-color: #333;
     border-radius: 10px;
     overflow: hidden;
     box-shadow: 0 0 8px rgba(0, 0, 0, 0.7);
-  }
-  
-  .progress {
+}
+
+.progress {
     height: 100%;
     background-color: #1976d2;
     transition: width 0.3s ease;
-  }
-  .loading-container::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background-color: rgba(0, 0, 0, 0.5); /* bisa ubah ke 0.6-0.7 kalau perlu lebih gelap */
-    z-index: 0;
-  }
-  
-  .loading-container > * {
-    position: relative;
-    z-index: 1;
-  }
-  
-  
+}
+
+/* Media queries untuk berbagai ukuran layar */
+@media (min-width: 768px) {
+    .loading-image {
+        width: 200px;
+        margin-bottom: 30px;
+    }
+    
+    .progress-bar {
+        width: 60%;
+        height: 16px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .progress-bar {
+        width: 50%;
+    }
+}

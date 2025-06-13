@@ -17,8 +17,10 @@ const TutorialPage = () => {
 
           <h2>🕹️ Kontrol</h2>
           <ul>
-            <li>⬆️ Tombol Atas: Naik</li>
-            <li>⬇️ Tombol Bawah: Turun</li>l
+            <li>Tombol Atas: Naik</li>
+            <li>Tombol Bawah: Turun</li>
+            <li>Tombol Kanan: Kanan</li>
+            <li></li>
           </ul>
 
           <h2>🚀 Aturan Main</h2>
