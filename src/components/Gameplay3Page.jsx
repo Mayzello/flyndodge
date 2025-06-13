@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "../styles/gameplay3.css";
+import "../styles/gameplay.css";
 import saitamaImage from "../assets/map3/charmap3.png";
 import rocketImage from "../assets/map1/roket1.png";
 import backgroundImage from "../assets/map3/bgmap3.jpg";
