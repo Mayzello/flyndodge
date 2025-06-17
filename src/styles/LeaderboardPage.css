@@ -1,9 +1,5 @@
 .leaderboard-container {
-  background: linear-gradient(
-      rgba(0, 0, 0, 0.7), 
-      rgba(0, 0, 0, 0.7)
-    ),
-    url("/background.jpg");
+  background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url("/background.jpg");
   background-size: cover;
   background-position: center;
   min-height: 100vh;
@@ -13,7 +9,7 @@
 }
 
 .leaderboard-title {
-  font-size: 2rem;
+  font-size: 1.8rem;
   margin-bottom: 1.5rem;
   font-weight: bold;
   text-shadow: 2px 2px #000;
@@ -23,7 +19,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 20px;
+  gap: 15px;
   margin-bottom: 2rem;
 }
 
@@ -31,9 +27,10 @@
   background: rgba(255, 255, 255, 0.1);
   border-radius: 12px;
   padding: 1rem;
-  width: 80%;
-  max-width: 300px;
+  width: 90%;
+  max-width: 280px;
   box-sizing: border-box;
+  transition: transform 0.3s ease;
 }
 
 .player-card.first {
@@ -41,97 +38,115 @@
   color: black;
   transform: scale(1.05);
   padding: 1.5rem;
-  order: -1; /* Ensures first place is on top in mobile */
+  order: -1;
 }
 
 .avatar {
-  width: 60px;
-  height: 60px;
+  width: 50px;
+  height: 50px;
   background: #ccc;
   border-radius: 50%;
   margin: 0 auto 10px;
+  object-fit: cover;
 }
 
 .avatar.large {
-  width: 80px;
-  height: 80px;
+  width: 70px;
+  height: 70px;
 }
 
 .other-players {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   width: 100%;
 }
 
 .row-player {
   background: rgba(0, 0, 0, 0.5);
-  border-radius: 10px;
-  width: 100%;
-  max-width: 500px;
+  border-radius: 8px;
+  width: 95%;
+  max-width: 450px;
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
-  padding: 10px;
+  padding: 8px 12px;
   box-sizing: border-box;
+  transition: transform 0.2s ease;
+}
+
+.row-player:hover {
+  transform: scale(1.02);
 }
 
 .avatar.small {
-  width: 40px;
-  height: 40px;
+  width: 35px;
+  height: 35px;
   background: #aaa;
   border-radius: 50%;
+  object-fit: cover;
 }
 
 .name {
   font-weight: bold;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
+  flex-grow: 1;
+  text-align: left;
+  padding: 0 10px;
+}
+
+.score {
+  font-weight: bold;
+  min-width: 40px;
 }
 
 .back-button {
-  margin-top: 2rem;
-  padding: 10px 20px;
+  margin-top: 1.5rem;
+  padding: 8px 16px;
   background-color: #ffcc00;
   color: black;
   font-weight: bold;
   border: none;
-  border-radius: 8px;
+  border-radius: 6px;
   cursor: pointer;
-  font-size: 1rem;
+  font-size: 0.9rem;
+  transition: background-color 0.3s ease;
 }
 
 .back-button:hover {
   background-color: #e6b800;
 }
 
+/* Medal places styling */
 .first-place {
   background: linear-gradient(135deg, #FFD700, #FFA500);
-  box-shadow: 0 0 20px #FFD700;
-  border: 3px solid #FFD700;
-  animation: pulse-gold 2s infinite;
-}
-
-@keyframes pulse-gold {
-  0% { box-shadow: 0 0 10px #FFD700; }
-  100% { box-shadow: 0 0 20px #FFA500; }
+  box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+  border: 2px solid #FFD700;
+  animation: pulse-gold 2s infinite alternate;
 }
 
 .second-place {
   background: linear-gradient(135deg, #C0C0C0, #A9A9A9);
-  box-shadow: 0 0 15px #C0C0C0;
-  border: 3px solid #C0C0C0;
+  box-shadow: 0 0 10px rgba(192, 192, 192, 0.5);
+  border: 2px solid #C0C0C0;
 }
 
 .third-place {
   background: linear-gradient(135deg, #CD7F32, #8B4513);
-  box-shadow: 0 0 15px #CD7F32;
-  border: 3px solid #CD7F32;
+  box-shadow: 0 0 10px rgba(205, 127, 50, 0.5);
+  border: 2px solid #CD7F32;
 }
 
+@keyframes pulse-gold {
+  0% { box-shadow: 0 0 10px rgba(255, 215, 0, 0.5); }
+  100% { box-shadow: 0 0 20px rgba(255, 165, 0, 0.7); }
+}
+
+/* Animations */
 @keyframes slide-up {
   from {
-    transform: translateY(50px);
+    transform: translateY(30px);
     opacity: 0;
   }
   to {
@@ -141,23 +156,53 @@
 }
 
 .slide-up {
-  animation: slide-up 0.6s ease-out forwards;
+  animation: slide-up 0.5s ease-out forwards;
+}
+
+/* Responsive Breakpoints */
+
+/* Small devices (landscape phones, 576px and up) */
+@media (min-width: 576px) {
+  .leaderboard-title {
+    font-size: 2rem;
+  }
+  
+  .player-card {
+    width: 85%;
+  }
+  
+  .avatar {
+    width: 55px;
+    height: 55px;
+  }
+  
+  .avatar.large {
+    width: 75px;
+    height: 75px;
+  }
+  
+  .row-player {
+    width: 90%;
+    padding: 10px 15px;
+  }
 }
 
 /* Medium devices (tablets, 768px and up) */
 @media (min-width: 768px) {
   .leaderboard-title {
-    font-size: 2.5rem;
+    font-size: 2.3rem;
   }
   
   .top-three {
     flex-direction: row;
     justify-content: center;
     align-items: flex-end;
+    gap: 20px;
   }
   
   .player-card {
-    width: 150px;
+    width: 160px;
+    max-width: none;
   }
   
   .player-card.first {
@@ -167,35 +212,76 @@
   
   .row-player {
     width: 80%;
+    max-width: 500px;
+  }
+  
+  .name {
+    font-size: 0.9rem;
+  }
+  
+  .back-button {
+    padding: 10px 20px;
+    font-size: 1rem;
   }
 }
 
 /* Large devices (desktops, 992px and up) */
 @media (min-width: 992px) {
   .leaderboard-title {
-    font-size: 3rem;
+    font-size: 2.8rem;
   }
   
   .player-card {
     width: 180px;
+    padding: 1.2rem;
+  }
+  
+  .player-card.first {
+    padding: 1.8rem;
   }
   
   .avatar {
-    width: 80px;
-    height: 80px;
+    width: 70px;
+    height: 70px;
   }
   
   .avatar.large {
-    width: 100px;
-    height: 100px;
+    width: 90px;
+    height: 90px;
+  }
+  
+  .avatar.small {
+    width: 40px;
+    height: 40px;
   }
   
   .row-player {
     width: 70%;
     max-width: 600px;
+    padding: 12px 20px;
   }
   
   .name {
     font-size: 1rem;
+  }
+}
+
+/* Extra large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {
+  .leaderboard-title {
+    font-size: 3.2rem;
+  }
+  
+  .player-card {
+    width: 200px;
+  }
+  
+  .top-three {
+    gap: 30px;
+  }
+  
+  .row-player {
+    width: 60%;
+    max-width: 700px;
   }
 }
